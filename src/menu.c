@@ -1979,6 +1979,26 @@ void AddTextPrinterParameterized4(u8 windowId, u8 fontId, u8 left, u8 top, u8 le
 
     AddTextPrinter(&printer, speed, NULL);
 }
+void AddTextPrinterParameterizedHPBox(u8 windowId, u8 fontId, u8 left, u8 top, u8 letterSpacing, u8 lineSpacing, const u8 *color, s8 speed, const u8 *str)
+{
+    struct TextPrinterTemplate printer;
+
+    printer.currentChar = str;
+    printer.windowId = windowId;
+    printer.fontId = fontId;
+    printer.x = left;
+    printer.y = top;
+    printer.currentX = printer.x;
+    printer.currentY = printer.y;
+    printer.letterSpacing = letterSpacing;
+    printer.lineSpacing = lineSpacing;
+    printer.unk = 0;
+    printer.fgColor = GetFontAttribute(fontId, 6);
+    printer.bgColor = GetFontAttribute(fontId, 5);
+    printer.shadowColor = GetFontAttribute(fontId, 7);
+
+    AddTextPrinter(&printer, speed, NULL);
+}
 
 void AddTextPrinterParameterized5(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16), u8 letterSpacing, u8 lineSpacing)
 {

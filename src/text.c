@@ -255,6 +255,8 @@ u32 RenderFont(struct TextPrinter *textPrinter)
 
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor)
 {
+    u8 cols[] = {bgColor, fgColor, shadowColor};
+    u8 i, j, k;
     u32 fg12, bg12, shadow12;
     u32 temp;
 
@@ -267,141 +269,20 @@ void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor)
     bg12 = bgColor << 12;
     fg12 = fgColor << 12;
     shadow12 = shadowColor << 12;
-
-    temp = (bgColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
+    
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            for (k = 0; k <3; k++)
+            {
+                temp = (cols[k] << 8) | (cols[j] << 4) | cols[i];
+                *(current++) = (bg12) | temp;
+                *(current++) = (fg12) | temp;
+                *(current++) = (shadow12) | temp;
+            }
+        }
+    }
 }
 
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor)

@@ -107,11 +107,11 @@
 #define TEXT_COLOR_TRANSPARENT  0x0
 #define TEXT_COLOR_WHITE        0x1
 #define TEXT_COLOR_DARK_GREY    0x2
-//                              0x3
+#define TEXT_COLOR_LIGHT_GREY   0x3
 #define TEXT_COLOR_RED          0x4
-//                              0x5
+#define TEXT_COLOR_ORANGE       0x5
 #define TEXT_COLOR_GREEN        0x6
-//                              0x7
+#define TEXT_COLOR_LIGHT_GREEN  0x7
 #define TEXT_COLOR_BLUE         0x8
 
 // battle placeholders are located in battle_message.h
@@ -154,8 +154,9 @@ struct TextPrinterTemplate
     u8 currentY;
     u8 letterSpacing;
     u8 lineSpacing;
-    u8 unk:4;   // 0xC
+    u8 unk;   // 0xC
     u8 fgColor:4;
+    u8 fgColor2:4;
     u8 bgColor:4;
     u8 shadowColor:4;
 };
