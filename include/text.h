@@ -152,7 +152,7 @@ struct TextPrinterTemplate
     u8 y;
     u8 currentX;        // 0x8
     u8 currentY;
-    u8 letterSpacing;
+    s8 letterSpacing;
     u8 lineSpacing;
     u8 unk;   // 0xC
     u8 fgColor:4;
@@ -177,7 +177,7 @@ struct TextPrinter
     u8 textSpeed;
     u8 delayCounter;
     u8 scrollDistance;
-    u8 minLetterSpacing;  // 0x20
+    s8 minLetterSpacing;  // 0x20
     u8 japanese;
 };
 
@@ -186,7 +186,7 @@ struct FontInfo
     u16 (*fontFunction)(struct TextPrinter *x);
     u8 maxLetterWidth;
     u8 maxLetterHeight;
-    u8 letterSpacing;
+    s8 letterSpacing;
     u8 lineSpacing;
     u8 unk:4;
     u8 fgColor:4;
@@ -239,6 +239,7 @@ void RunTextPrinters(void);
 bool16 IsTextPrinterActive(u8 id);
 u32 RenderFont(struct TextPrinter *textPrinter);
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor);
+void GenerateFontHalfRowLookupTable4(u8 fgColor, u8 fgcolor2, u8 bgColor, u8 shadowColor);
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void DecompressGlyphTile(const void *src_, void *dest_);
@@ -264,7 +265,7 @@ bool16 TextPrinterWaitWithDownArrow(struct TextPrinter *textPrinter);
 bool16 TextPrinterWait(struct TextPrinter *textPrinter);
 void DrawDownArrow(u8 windowId, u16 x, u16 y, u8 bgColor, bool8 drawArrow, u8 *counter, u8 *yCoordIndex);
 u16 RenderText(struct TextPrinter *textPrinter);
-u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, u8 letterSpacing);
+u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, s8 letterSpacing);
 u32 (*GetFontWidthFunc(u8 glyphId))(u16, bool32);
 s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing);
 u8 RenderTextFont9(u8 *pixels, u8 fontId, u8 *str);

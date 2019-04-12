@@ -3615,7 +3615,7 @@ static bool32 TryAddContestLinkTvShow(struct Pokeblock *pokeblock, struct TvBlen
 static void Blender_AddTextPrinter(u8 windowId, const u8 *string, u8 x, u8 y, s32 speed, s32 caseId)
 {
     u8 txtColor[3];
-    u32 letterSpacing = 0;
+    s8 letterSpacing = 0;
 
     switch (caseId)
     {

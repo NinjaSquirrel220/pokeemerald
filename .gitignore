@@ -29,3 +29,4 @@ build/
 *.ddump
 porymap.project.cfg
 *.ini
+*.bak

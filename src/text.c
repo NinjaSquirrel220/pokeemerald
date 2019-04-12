@@ -183,7 +183,7 @@ bool16 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, voi
 
     gTempTextPrinter.printerTemplate = *printerTemplate;
     gTempTextPrinter.callback = callback;
-    gTempTextPrinter.minLetterSpacing = 0;
+    gTempTextPrinter.minLetterSpacing = -1;
     gTempTextPrinter.japanese = 0;
 
     GenerateFontHalfRowLookupTable(printerTemplate->fgColor, printerTemplate->bgColor, printerTemplate->shadowColor);
@@ -299,33 +299,15 @@ void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor)
 
 void DecompressGlyphTile(const void *src_, void *dest_)
 {
-    u32 temp;
+    u32 temp, i;
     const u16 *src = src_;
     u32 *dest = dest_;
 
-    temp = *(src++);
-    *(dest)++ = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
+    for (i = 0; i < 9; i++)
+    {
+        temp = *(src++);
+        *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
+    }
 }
 
 u8 GetLastTextColor(u8 colorType)
@@ -1554,7 +1536,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
 
         CopyGlyphToWindow(textPrinter);
 
-        if (textPrinter->minLetterSpacing)
+        /*if (textPrinter->minLetterSpacing)
         {
             textPrinter->printerTemplate.currentX += gUnknown_03002F90.unk80;
             width = textPrinter->minLetterSpacing - gUnknown_03002F90.unk80;
@@ -1565,12 +1547,12 @@ u16 RenderText(struct TextPrinter *textPrinter)
             }
         }
         else
-        {
+        {*/
             if (textPrinter->japanese)
                 textPrinter->printerTemplate.currentX += (gUnknown_03002F90.unk80 + textPrinter->printerTemplate.letterSpacing);
             else
-                textPrinter->printerTemplate.currentX += gUnknown_03002F90.unk80;
-        }
+                textPrinter->printerTemplate.currentX += (gUnknown_03002F90.unk80 + textPrinter->printerTemplate.letterSpacing);
+        //}
         return 0;
     case 1:
         if (TextPrinterWait(textPrinter))
@@ -1631,7 +1613,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
     return 1;
 }
 
-u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, u8 letterSpacing)
+u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, s8 letterSpacing)
 {
     int i;
     u8 width;
