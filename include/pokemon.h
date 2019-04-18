@@ -163,20 +163,22 @@ struct BoxPokemon
     u32 personality;
     u32 otId;
     u8 nickname[12]; // length 12
-    u8 language:3;
-    u8 isEgg:1;
-    u8 markings:4;
-    u8 otName[PLAYER_NAME_LENGTH];
     
     //substruct0
-    u16 species;
-    u16 heldItem;
-    u32 experience;
-    u8 ppBonuses;
-    u8 friendship;
+    u32 species:11;
+    u32 experience:21;
     
     //substruct1
-    u16 moves[4];
+    u32 move1:10;
+    u32 move2:10;
+    u32 language:3;
+    u32 gender:1;
+    u32 friendship:8;
+    
+    u32 move3:10;
+    u32 move4:10;
+    u32 pokerus:4;
+    u32 ppBonuses:8;
     
     //substruct2
     u8 hpEV;
@@ -193,41 +195,43 @@ struct BoxPokemon
     u8 sheen;
     
     //substruct3
- /* 0x00 */ u8 pokerus;
- /* 0x01 */ u8 metLocation;
+    u16 heldItem:10;
+    u16 formId:5;
+    u16 isEgg:1;
+    u8 metLocation;
+    u16 metLevel:7;
+    u16 metGame:3;
+    u16 pokeball:5;
+    u16 otGender:1;
+    u8 otName[PLAYER_NAME_LENGTH];
 
- /* 0x02 */ u16 metLevel:7;
- /* 0x02 */ u16 metGame:4;
- /* 0x03 */ u16 pokeball:4;
- /* 0x03 */ u16 otGender:1;
+    u32 hpIV:5;
+    u32 attackIV:5;
+    u32 defenseIV:5;
+    u32 speedIV:5;
+    u32 spAttackIV:5;
+    u32 spDefenseIV:5;
+    u32 altAbility:2;
 
- /* 0x04 */ u32 hpIV:5;
- /* 0x04 */ u32 attackIV:5;
- /* 0x05 */ u32 defenseIV:5;
- /* 0x05 */ u32 speedIV:5;
- /* 0x05 */ u32 spAttackIV:5;
- /* 0x06 */ u32 spDefenseIV:5;
- /* 0x07 */ u32 altAbility:2;
-
- /* 0x08 */ u32 coolRibbon:3;
- /* 0x08 */ u32 beautyRibbon:3;
- /* 0x08 */ u32 cuteRibbon:3;
- /* 0x09 */ u32 smartRibbon:3;
- /* 0x09 */ u32 toughRibbon:3;
- /* 0x09 */ u32 championRibbon:1;
- /* 0x0A */ u32 winningRibbon:1;
- /* 0x0A */ u32 victoryRibbon:1;
- /* 0x0A */ u32 artistRibbon:1;
- /* 0x0A */ u32 effortRibbon:1;
- /* 0x0A */ u32 giftRibbon1:1;
- /* 0x0A */ u32 giftRibbon2:1;
- /* 0x0A */ u32 giftRibbon3:1;
- /* 0x0A */ u32 giftRibbon4:1;
- /* 0x0B */ u32 giftRibbon5:1;
- /* 0x0B */ u32 giftRibbon6:1;
- /* 0x0B */ u32 giftRibbon7:1;
- /* 0x0B */ u32 fatefulEncounter:4;
- /* 0x0B */ u32 obedient:1;
+    u32 coolRibbon:3;
+    u32 beautyRibbon:3;
+    u32 cuteRibbon:3;
+    u32 smartRibbon:3;
+    u32 toughRibbon:3;
+    u32 championRibbon:1;
+    u32 winningRibbon:1;
+    u32 victoryRibbon:1;
+    u32 artistRibbon:1;
+    u32 effortRibbon:1;
+    u32 giftRibbon1:1;
+    u32 giftRibbon2:1;
+    u32 giftRibbon3:1;
+    u32 giftRibbon4:1;
+    u32 giftRibbon5:1;
+    u32 giftRibbon6:1;
+    u32 giftRibbon7:1;
+    u32 fatefulEncounter:1;
+    u32 markings:4;
 };
 
 struct BoxPokemonNew
