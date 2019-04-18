@@ -136,21 +136,49 @@
 
 struct PokemonSubstruct0
 {
+};
+
+struct PokemonSubstruct1
+{
+};
+
+struct PokemonSubstruct2
+{
+};
+
+struct PokemonSubstruct3
+{
+};
+
+struct PokemonSubstruct
+{
+    struct PokemonSubstruct0 type0;
+    struct PokemonSubstruct1 type1;
+    struct PokemonSubstruct2 type2;
+    struct PokemonSubstruct3 type3;
+};
+
+struct BoxPokemon
+{
+    u32 personality;
+    u32 otId;
+    u8 nickname[12]; // length 12
+    u8 language:3;
+    u8 isEgg:1;
+    u8 markings:4;
+    u8 otName[PLAYER_NAME_LENGTH];
+    
+    //substruct0
     u16 species;
     u16 heldItem;
     u32 experience;
     u8 ppBonuses;
     u8 friendship;
-};
-
-struct PokemonSubstruct1
-{
+    
+    //substruct1
     u16 moves[4];
-    u8 pp[4];
-};
-
-struct PokemonSubstruct2
-{
+    
+    //substruct2
     u8 hpEV;
     u8 attackEV;
     u8 defenseEV;
@@ -163,10 +191,8 @@ struct PokemonSubstruct2
     u8 smart;
     u8 tough;
     u8 sheen;
-};
-
-struct PokemonSubstruct3
-{
+    
+    //substruct3
  /* 0x00 */ u8 pokerus;
  /* 0x01 */ u8 metLocation;
 
@@ -181,8 +207,7 @@ struct PokemonSubstruct3
  /* 0x05 */ u32 speedIV:5;
  /* 0x05 */ u32 spAttackIV:5;
  /* 0x06 */ u32 spDefenseIV:5;
- /* 0x07 */ u32 isEgg:1;
- /* 0x07 */ u32 altAbility:1;
+ /* 0x07 */ u32 altAbility:2;
 
  /* 0x08 */ u32 coolRibbon:3;
  /* 0x08 */ u32 beautyRibbon:3;
@@ -203,32 +228,6 @@ struct PokemonSubstruct3
  /* 0x0B */ u32 giftRibbon7:1;
  /* 0x0B */ u32 fatefulEncounter:4;
  /* 0x0B */ u32 obedient:1;
-};
-
-struct PokemonSubstruct
-{
-    struct PokemonSubstruct0 type0;
-    struct PokemonSubstruct1 type1;
-    struct PokemonSubstruct2 type2;
-    struct PokemonSubstruct3 type3;
-};
-
-struct BoxPokemon
-{
-    u32 personality;
-    u32 otId;
-    u8 nickname[POKEMON_NAME_LENGTH]; // length 12
-    u8 language;
-    u8 isBadEgg:1;
-    u8 hasSpecies:1;
-    u8 isEgg:1;
-    u8 unused:5;
-    u8 otName[PLAYER_NAME_LENGTH];
-    u8 markings;
-    u16 checksum;
-    u16 unknown;
-
-    struct PokemonSubstruct substruct;
 };
 
 struct BoxPokemonNew
@@ -319,6 +318,7 @@ struct MovePlusPP
 struct Pokemon
 {
     struct BoxPokemon box;
+    u8 pp[4];
     u32 status;
     u8 level;
     u8 mail;
