@@ -3817,6 +3817,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SPECIES:
         SET16(boxMon->species);
+        break;
     case MON_DATA_HELD_ITEM:
         SET16(boxMon->heldItem);
         break;
@@ -3921,10 +3922,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_IS_EGG:
         SET8(boxMon->isEgg);
-        if (boxMon->isEgg)
-            boxMon->isEgg = 1;
-        else
-            boxMon->isEgg = 0;
         break;
     case MON_DATA_ALT_ABILITY:
         SET8(boxMon->altAbility);
