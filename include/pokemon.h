@@ -161,10 +161,12 @@ struct BoxPokemon
     u8 attackEV;
     u8 defenseEV;
     u8 speedEV;
+    
     u8 spAttackEV;
     u8 spDefenseEV;
     u8 cool;
     u8 beauty;
+    
     u8 cute;
     u8 smart;
     u8 tough;
@@ -174,11 +176,12 @@ struct BoxPokemon
     u16 heldItem:10;
     u16 formId:5;
     u16 isEgg:1;
-    u8 metLocation;
     u16 metLevel:7;
     u16 metGame:3;
     u16 pokeball:5;
     u16 otGender:1;
+    
+    u8 metLocation;
     u8 otName[PLAYER_NAME_LENGTH];
 
     u32 hpIV:5;
