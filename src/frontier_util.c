@@ -1,5 +1,4 @@
 #include "global.h"
-#include "pokemon_storage_system.h"
 #include "frontier_util.h"
 #include "event_data.h"
 #include "battle_setup.h"
@@ -909,7 +908,7 @@ static void sub_81A1B38(void)
     {
         u16 monId = gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1;
         if (monId < PARTY_SIZE)
-            gPokemonStoragePtr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1] = gPlayerParty[i];
+            gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1] = gPlayerParty[i];
     }
 }
 
@@ -2149,7 +2148,7 @@ static void sub_81A43A8(void)
     {
         if (gSaveBlock2Ptr->frontier.selectedPartyMons[i] != 0)
         {
-            u16 item = GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_HELD_ITEM, NULL);
+            u16 item = GetMonData(&gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_HELD_ITEM, NULL);
             SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &item);
         }
     }
@@ -2187,14 +2186,14 @@ static void sub_81A447C(void)
             {
                 for (k = 0; k < MAX_MON_MOVES; k++)
                 {
-                    if (GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_MOVE1 + k, NULL)
+                    if (GetMonData(&gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_MOVE1 + k, NULL)
                         == GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + j, NULL))
                         break;
                 }
                 if (k == MAX_MON_MOVES)
                     SetMonMoveSlot(&gPlayerParty[i], MOVE_SKETCH, j);
             }
-            gPokemonStoragePtr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1] = gPlayerParty[i];
+            gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1] = gPlayerParty[i];
         }
     }
 }

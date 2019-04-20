@@ -1,5 +1,4 @@
 #include "global.h"
-#include "pokemon_storage_system.h"
 #include "battle_pike.h"
 #include "event_data.h"
 #include "frontier_util.h"
@@ -1604,7 +1603,7 @@ static void BackupMonHeldItems(void)
 
     for (i = 0; i < 3; i++)
     {
-        int heldItem = GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1],
+        int heldItem = GetMonData(&gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1],
                                   MON_DATA_HELD_ITEM);
         gSaveBlock2Ptr->frontier.pikeHeldItemsBackup[i] = heldItem;
     }

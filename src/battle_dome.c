@@ -1,5 +1,4 @@
 #include "global.h"
-#include "pokemon_storage_system.h"
 #include "battle_dome.h"
 #include "battle.h"
 #include "battle_setup.h"
@@ -5696,7 +5695,7 @@ static void RestoreDomePlayerParty(void)
             count = 0;
             while (count < MAX_MON_MOVES)
             {
-                if (GetMonData(&gPokemonStoragePtr->playerParty[playerMonId], MON_DATA_MOVE1 + count, NULL) == GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + moveSlot, NULL))
+                if (GetMonData(&gSaveBlock1Ptr->playerParty[playerMonId], MON_DATA_MOVE1 + count, NULL) == GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + moveSlot, NULL))
                     break;
                 count++;
             }
@@ -5704,7 +5703,7 @@ static void RestoreDomePlayerParty(void)
                 SetMonMoveSlot(&gPlayerParty[i], MOVE_SKETCH, moveSlot);
         }
 
-        gPokemonStoragePtr->playerParty[playerMonId] = gPlayerParty[i];
+        gSaveBlock1Ptr->playerParty[playerMonId] = gPlayerParty[i];
     }
 }
 
@@ -5715,7 +5714,7 @@ static void RestoreDomePlayerPartyHeldItems(void)
     for (i = 0; i < 2; i++)
     {
         int playerMonId = gSaveBlock2Ptr->frontier.selectedPartyMons[gSelectedOrderFromParty[i] - 1] - 1;
-        u16 item = GetMonData(&gPokemonStoragePtr->playerParty[playerMonId], MON_DATA_HELD_ITEM, NULL);
+        u16 item = GetMonData(&gSaveBlock1Ptr->playerParty[playerMonId], MON_DATA_HELD_ITEM, NULL);
         SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &item);
     }
 }

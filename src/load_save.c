@@ -165,20 +165,20 @@ void SavePlayerParty(void)
 {
     int i;
 
-    gPokemonStoragePtr->playerPartyCount = gPlayerPartyCount;
+    gSaveBlock1Ptr->playerPartyCount = gPlayerPartyCount;
 
     for (i = 0; i < PARTY_SIZE; i++)
-        gPokemonStoragePtr->playerParty[i] = gPlayerParty[i];
+        gSaveBlock1Ptr->playerParty[i] = gPlayerParty[i];
 }
 
 void LoadPlayerParty(void)
 {
     int i;
 
-    gPlayerPartyCount = gPokemonStoragePtr->playerPartyCount;
+    gPlayerPartyCount = gSaveBlock1Ptr->playerPartyCount;
 
     for (i = 0; i < PARTY_SIZE; i++)
-        gPlayerParty[i] = gPokemonStoragePtr->playerParty[i];
+        gPlayerParty[i] = gSaveBlock1Ptr->playerParty[i];
 }
 
 void SaveEventObjects(void)

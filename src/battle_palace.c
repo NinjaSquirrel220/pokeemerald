@@ -1,5 +1,4 @@
 #include "global.h"
-#include "pokemon_storage_system.h"
 #include "event_data.h"
 #include "battle_setup.h"
 #include "overworld.h"
