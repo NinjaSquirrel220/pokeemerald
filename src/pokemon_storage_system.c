@@ -7319,7 +7319,6 @@ _080CF326:\n\
     ands r0, r1\n\
     cmp r0, 0\n\
     beq _080CF338\n\
-    bl sub_80CFDC4\n\
     movs r0, 0\n\
     b _080CF366\n\
 _080CF338:\n\
