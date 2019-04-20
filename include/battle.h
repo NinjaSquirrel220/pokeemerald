@@ -75,47 +75,6 @@ struct ResourceFlags
 #define RESOURCE_FLAG_INTIMIDATED   0x8
 #define RESOURCE_FLAG_TRACED        0x10
 
-struct DisableStruct
-{
-    u32 transformedMonPersonality;
-    u16 disabledMove;
-    u16 encoredMove;
-    u8 protectUses;
-    u8 stockpileCounter;
-    u8 substituteHP;
-    u8 disableTimer:4;
-    u8 disableTimerStartValue:4;
-    u8 encoredMovePos;
-    u8 encoreTimer:4;
-    u8 encoreTimerStartValue:4;
-    u8 perishSongTimer:4;
-    u8 perishSongTimerStartValue:4;
-    u8 furyCutterCounter;
-    u8 rolloutTimer:4;
-    u8 rolloutTimerStartValue:4;
-    u8 chargeTimer:4;
-    u8 chargeTimerStartValue:4;
-    u8 tauntTimer:4;
-    u8 tauntTimer2:4;
-    u8 battlerPreventingEscape;
-    u8 battlerWithSureHit;
-    u8 isFirstTurn;
-    u8 truantCounter:1;
-    u8 truantSwitchInHack:1;
-    u8 mimickedMoves:4;
-    u8 rechargeTimer;
-    u8 autonomizeCount;
-    u8 slowStartTimer;
-    u8 embargoTimer;
-    u8 magnetRiseTimer;
-    u8 telekinesisTimer;
-    u8 healBlockTimer;
-    u8 laserFocusTimer;
-    u8 throatChopTimer;
-    u8 usedMoves:4;
-    u8 wrapTurns;
-};
-
 struct ProtectStruct
 {
     u32 protected:1;
