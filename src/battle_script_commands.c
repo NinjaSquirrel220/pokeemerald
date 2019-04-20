@@ -919,16 +919,16 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
         return FALSE;
     else if (gBattleMoves[move].effect == MOVE_EFFECT_FEINT)
         return FALSE;
-    else if (gProtectStructs[battlerId].protected)
+    else if (MonProtectStruct(battlerId)->protected)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_WIDE_GUARD
              && gBattleMoves[move].target & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
         return TRUE;
-    else if (gProtectStructs[battlerId].banefulBunkered)
+    else if (MonProtectStruct(battlerId)->banefulBunkered)
         return TRUE;
-    else if (gProtectStructs[battlerId].spikyShielded)
+    else if (MonProtectStruct(battlerId)->spikyShielded)
         return TRUE;
-    else if (gProtectStructs[battlerId].kingsShielded && gBattleMoves[move].power != 0)
+    else if (MonProtectStruct(battlerId)->kingsShielded && gBattleMoves[move].power != 0)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_QUICK_GUARD
              && GetChosenMovePriority(gBattlerAttacker) > 0)
@@ -1009,13 +1009,13 @@ static void atk00_attackcanceler(void)
 
     gHitMarker |= HITMARKER_OBEYS;
 
-    if (gProtectStructs[gBattlerTarget].bounceMove
+    if (MonProtectStruct(gBattlerTarget)->bounceMove
         && gBattleMoves[gCurrentMove].flags & FLAG_MAGICCOAT_AFFECTED
-        && !gProtectStructs[gBattlerAttacker].usesBouncedMove)
+        && !MonProtectStruct(gBattlerAttacker)->usesBouncedMove)
     {
         PressurePPLose(gBattlerAttacker, gBattlerTarget, MOVE_MAGIC_COAT);
-        gProtectStructs[gBattlerTarget].bounceMove = 0;
-        gProtectStructs[gBattlerTarget].usesBouncedMove = 1;
+        MonProtectStruct(gBattlerTarget)->bounceMove = 0;
+        MonProtectStruct(gBattlerTarget)->usesBouncedMove = 1;
         gBattleCommunication[MULTISTRING_CHOOSER] = 0;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_MagicCoatBounce;
@@ -1023,10 +1023,10 @@ static void atk00_attackcanceler(void)
     }
     else if (GetBattlerAbility(gBattlerTarget) == ABILITY_MAGIC_BOUNCE
              && gBattleMoves[gCurrentMove].flags & FLAG_MAGICCOAT_AFFECTED
-             && !gProtectStructs[gBattlerAttacker].usesBouncedMove)
+             && !MonProtectStruct(gBattlerAttacker)->usesBouncedMove)
     {
         RecordAbilityBattle(gBattlerTarget, ABILITY_MAGIC_BOUNCE);
-        gProtectStructs[gBattlerTarget].usesBouncedMove = 1;
+        MonProtectStruct(gBattlerTarget)->usesBouncedMove = 1;
         gBattleCommunication[MULTISTRING_CHOOSER] = 1;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_MagicCoatBounce;
@@ -1035,10 +1035,10 @@ static void atk00_attackcanceler(void)
 
     for (i = 0; i < gBattlersCount; i++)
     {
-        if ((gProtectStructs[gBattlerByTurnOrder[i]].stealMove) && gBattleMoves[gCurrentMove].flags & FLAG_SNATCH_AFFECTED)
+        if ((MonProtectStruct(gBattlerByTurnOrder[i])->stealMove) && gBattleMoves[gCurrentMove].flags & FLAG_SNATCH_AFFECTED)
         {
             PressurePPLose(gBattlerAttacker, gBattlerByTurnOrder[i], MOVE_SNATCH);
-            gProtectStructs[gBattlerByTurnOrder[i]].stealMove = 0;
+            MonProtectStruct(gBattlerByTurnOrder[i])->stealMove = 0;
             gBattleScripting.battler = gBattlerByTurnOrder[i];
             BattleScriptPushCursor();
             gBattlescriptCurrInstr = BattleScript_SnatchedMove;
@@ -1351,7 +1351,7 @@ static void atk03_ppreduce(void)
 
     if (!(gHitMarker & (HITMARKER_NO_PPDEDUCT | HITMARKER_NO_ATTACKSTRING)) && gBattleMons[gBattlerAttacker].pp[gCurrMovePos])
     {
-        gProtectStructs[gBattlerAttacker].notFirstStrike = 1;
+        MonProtectStruct(gBattlerAttacker)->notFirstStrike = 1;
 
         if (gBattleMons[gBattlerAttacker].pp[gCurrMovePos] > ppToDeduct)
             gBattleMons[gBattlerAttacker].pp[gCurrMovePos] -= ppToDeduct;
@@ -1490,7 +1490,7 @@ static void atk07_adjustdamage(void)
     }
 
     if (gBattleMoves[gCurrentMove].effect != EFFECT_FALSE_SWIPE
-        && !gProtectStructs[gBattlerTarget].endured
+        && !MonProtectStruct(gBattlerTarget)->endured
         && !gSpecialStatuses[gBattlerTarget].focusBanded
         && !gSpecialStatuses[gBattlerTarget].focusSashed
         && !gSpecialStatuses[gBattlerTarget].sturdied)
@@ -1499,7 +1499,7 @@ static void atk07_adjustdamage(void)
     // Handle reducing the dmg to 1 hp.
     gBattleMoveDamage = gBattleMons[gBattlerTarget].hp - 1;
 
-    if (gProtectStructs[gBattlerTarget].endured)
+    if (MonProtectStruct(gBattlerTarget)->endured)
     {
         gMoveResultFlags |= MOVE_RESULT_FOE_ENDURED;
     }
@@ -1728,31 +1728,31 @@ static void atk0C_datahpupdate(void)
 
                 if (IS_MOVE_PHYSICAL(gCurrentMove) && !(gHitMarker & HITMARKER_x100000) && gCurrentMove != MOVE_PAIN_SPLIT)
                 {
-                    gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
+                    MonProtectStruct(gActiveBattler)->physicalDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
                     if (gBattlescriptCurrInstr[1] == BS_TARGET)
                     {
-                        gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                        MonProtectStruct(gActiveBattler)->physicalBattlerId = gBattlerAttacker;
                         gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerAttacker;
                     }
                     else
                     {
-                        gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                        MonProtectStruct(gActiveBattler)->physicalBattlerId = gBattlerTarget;
                         gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
                     }
                 }
                 else if (!IS_MOVE_PHYSICAL(gCurrentMove) && !(gHitMarker & HITMARKER_x100000))
                 {
-                    gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
+                    MonProtectStruct(gActiveBattler)->specialDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
                     if (gBattlescriptCurrInstr[1] == BS_TARGET)
                     {
-                        gProtectStructs[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                        MonProtectStruct(gActiveBattler)->specialBattlerId = gBattlerAttacker;
                         gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerAttacker;
                     }
                     else
                     {
-                        gProtectStructs[gActiveBattler].specialBattlerId = gBattlerTarget;
+                        MonProtectStruct(gActiveBattler)->specialBattlerId = gBattlerTarget;
                         gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerTarget;
                     }
                 }
@@ -2420,7 +2420,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
             case MOVE_EFFECT_CHARGING:
                 gBattleMons[gEffectBattler].status2 |= STATUS2_MULTIPLETURNS;
                 gLockedMoves[gEffectBattler] = gCurrentMove;
-                gProtectStructs[gEffectBattler].chargingTurn = 1;
+                MonProtectStruct(gEffectBattler)->chargingTurn = 1;
                 gBattlescriptCurrInstr++;
                 break;
             case MOVE_EFFECT_WRAP:
@@ -2769,23 +2769,23 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 }
                 break;
             case MOVE_EFFECT_FEINT:
-                if (gProtectStructs[gBattlerTarget].protected
+                if (MonProtectStruct(gBattlerTarget)->protected
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_WIDE_GUARD
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_QUICK_GUARD
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_CRAFTY_SHIELD
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_MAT_BLOCK
-                    || gProtectStructs[gBattlerTarget].spikyShielded
-                    || gProtectStructs[gBattlerTarget].kingsShielded
-                    || gProtectStructs[gBattlerTarget].banefulBunkered)
+                    || MonProtectStruct(gBattlerTarget)->spikyShielded
+                    || MonProtectStruct(gBattlerTarget)->kingsShielded
+                    || MonProtectStruct(gBattlerTarget)->banefulBunkered)
                 {
-                    gProtectStructs[gBattlerTarget].protected = 0;
+                    MonProtectStruct(gBattlerTarget)->protected = 0;
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_WIDE_GUARD);
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_QUICK_GUARD);
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_CRAFTY_SHIELD);
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_MAT_BLOCK);
-                    gProtectStructs[gBattlerTarget].spikyShielded = 0;
-                    gProtectStructs[gBattlerTarget].kingsShielded = 0;
-                    gProtectStructs[gBattlerTarget].banefulBunkered = 0;
+                    MonProtectStruct(gBattlerTarget)->spikyShielded = 0;
+                    MonProtectStruct(gBattlerTarget)->kingsShielded = 0;
+                    MonProtectStruct(gBattlerTarget)->banefulBunkered = 0;
                     if (gCurrentMove == MOVE_FEINT)
                     {
                         BattleScriptPush(gBattlescriptCurrInstr + 1);
@@ -4256,7 +4256,7 @@ static void atk49_moveend(void)
         case ATK49_PROTECT_LIKE_EFFECT:
             if (gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
             {
-                if (gProtectStructs[gBattlerTarget].spikyShielded && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD)
+                if (MonProtectStruct(gBattlerTarget)->spikyShielded && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD)
                 {
                     gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
                     if (gBattleMoveDamage == 0)
@@ -4266,7 +4266,7 @@ static void atk49_moveend(void)
                     gBattlescriptCurrInstr = BattleScript_SpikyShieldEffect;
                     effect = 1;
                 }
-                else if (gProtectStructs[gBattlerTarget].kingsShielded)
+                else if (MonProtectStruct(gBattlerTarget)->kingsShielded)
                 {
                     i = gBattlerAttacker;
                     gBattlerAttacker = gBattlerTarget;
@@ -4276,7 +4276,7 @@ static void atk49_moveend(void)
                     gBattlescriptCurrInstr = BattleScript_KingsShieldEffect;
                     effect = 1;
                 }
-                else if (gProtectStructs[gBattlerTarget].banefulBunkered)
+                else if (MonProtectStruct(gBattlerTarget)->banefulBunkered)
                 {
                     gBattleScripting.moveEffect = MOVE_EFFECT_POISON | MOVE_EFFECT_AFFECTS_USER;
                     PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_BANEFUL_BUNKER);
@@ -4506,7 +4506,7 @@ static void atk49_moveend(void)
         case ATK49_NEXT_TARGET: // For moves hitting two opposing Pokemon.
             if (!(gHitMarker & HITMARKER_UNABLE_TO_USE_MOVE)
                 && gBattleTypeFlags & BATTLE_TYPE_DOUBLE
-                && !gProtectStructs[gBattlerAttacker].chargingTurn
+                && !MonProtectStruct(gBattlerAttacker)->chargingTurn
                 && (gBattleMoves[gCurrentMove].target == MOVE_TARGET_BOTH || gBattleMoves[gCurrentMove].target == MOVE_TARGET_FOES_AND_ALLY)
                 && !(gHitMarker & HITMARKER_NO_ATTACKSTRING))
             {
@@ -4548,7 +4548,7 @@ static void atk49_moveend(void)
         case ATK49_CLEAR_BITS: // Clear bits active just while using a move.
             if (gSpecialStatuses[gBattlerAttacker].instructedChosenTarget)
                 *(gBattleStruct->moveTarget + gBattlerAttacker) = gSpecialStatuses[gBattlerAttacker].instructedChosenTarget & 0x3;
-            gProtectStructs[gBattlerAttacker].usesBouncedMove = 0;
+            MonProtectStruct(gBattlerAttacker)->usesBouncedMove = 0;
             gBattleStruct->ateBoost[gBattlerAttacker] = 0;
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_ME_FIRST);
             gBattleScripting.atk49_state++;
@@ -7469,27 +7469,27 @@ static void atk77_setprotectlike(void)
         {
             if (gBattleMoves[gCurrentMove].effect == EFFECT_ENDURE)
             {
-                gProtectStructs[gBattlerAttacker].endured = 1;
+                MonProtectStruct(gBattlerAttacker)->endured = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 1;
             }
             else if (gCurrentMove == MOVE_DETECT || gCurrentMove == MOVE_PROTECT)
             {
-                gProtectStructs[gBattlerAttacker].protected = 1;
+                MonProtectStruct(gBattlerAttacker)->protected = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             }
             else if (gCurrentMove == MOVE_SPIKY_SHIELD)
             {
-                gProtectStructs[gBattlerAttacker].spikyShielded = 1;
+                MonProtectStruct(gBattlerAttacker)->spikyShielded = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             }
             else if (gCurrentMove == MOVE_KING_S_SHIELD)
             {
-                gProtectStructs[gBattlerAttacker].kingsShielded = 1;
+                MonProtectStruct(gBattlerAttacker)->kingsShielded = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             }
             else if (gCurrentMove == MOVE_BANEFUL_BUNKER)
             {
-                gProtectStructs[gBattlerAttacker].banefulBunkered = 1;
+                MonProtectStruct(gBattlerAttacker)->banefulBunkered = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             }
 
@@ -8569,7 +8569,7 @@ static void atk93_tryKO(void)
         }
         if (chance)
         {
-            if (gProtectStructs[gBattlerTarget].endured)
+            if (MonProtectStruct(gBattlerTarget)->endured)
             {
                 gBattleMoveDamage = gBattleMons[gBattlerTarget].hp - 1;
                 gMoveResultFlags |= MOVE_RESULT_FOE_ENDURED;
@@ -8974,18 +8974,18 @@ static void atkA0_psywavedamageeffect(void)
 static void atkA1_counterdamagecalculator(void)
 {
     u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
-    u8 sideTarget = GetBattlerSide(gProtectStructs[gBattlerAttacker].physicalBattlerId);
+    u8 sideTarget = GetBattlerSide(MonProtectStruct(gBattlerAttacker)->physicalBattlerId);
 
-    if (gProtectStructs[gBattlerAttacker].physicalDmg
+    if (MonProtectStruct(gBattlerAttacker)->physicalDmg
         && sideAttacker != sideTarget
-        && gBattleMons[gProtectStructs[gBattlerAttacker].physicalBattlerId].hp)
+        && gBattleMons[MonProtectStruct(gBattlerAttacker)->physicalBattlerId].hp)
     {
-        gBattleMoveDamage = gProtectStructs[gBattlerAttacker].physicalDmg * 2;
+        gBattleMoveDamage = MonProtectStruct(gBattlerAttacker)->physicalDmg * 2;
 
         if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
-            gBattlerTarget = gProtectStructs[gBattlerAttacker].physicalBattlerId;
+            gBattlerTarget = MonProtectStruct(gBattlerAttacker)->physicalBattlerId;
 
         gBattlescriptCurrInstr += 5;
     }
@@ -8999,16 +8999,16 @@ static void atkA1_counterdamagecalculator(void)
 static void atkA2_mirrorcoatdamagecalculator(void) // a copy of atkA1 with the physical -> special field changes
 {
     u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
-    u8 sideTarget = GetBattlerSide(gProtectStructs[gBattlerAttacker].specialBattlerId);
+    u8 sideTarget = GetBattlerSide(MonProtectStruct(gBattlerAttacker)->specialBattlerId);
 
-    if (gProtectStructs[gBattlerAttacker].specialDmg && sideAttacker != sideTarget && gBattleMons[gProtectStructs[gBattlerAttacker].specialBattlerId].hp)
+    if (MonProtectStruct(gBattlerAttacker)->specialDmg && sideAttacker != sideTarget && gBattleMons[MonProtectStruct(gBattlerAttacker)->specialBattlerId].hp)
     {
-        gBattleMoveDamage = gProtectStructs[gBattlerAttacker].specialDmg * 2;
+        gBattleMoveDamage = MonProtectStruct(gBattlerAttacker)->specialDmg * 2;
 
         if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
-            gBattlerTarget = gProtectStructs[gBattlerAttacker].specialBattlerId;
+            gBattlerTarget = MonProtectStruct(gBattlerAttacker)->specialBattlerId;
 
         gBattlescriptCurrInstr += 5;
     }
@@ -9985,7 +9985,7 @@ static void atkC4_trydobeatup(void)
             gBattleMoveDamage *= (GetMonData(&party[gBattleCommunication[0]], MON_DATA_LEVEL) * 2 / 5 + 2);
             gBattleMoveDamage /= gBaseStats[gBattleMons[gBattlerTarget].species].baseDefense;
             gBattleMoveDamage = (gBattleMoveDamage / 50) + 2;
-            if (gProtectStructs[gBattlerAttacker].helpingHand)
+            if (MonProtectStruct(gBattlerAttacker)->helpingHand)
                 gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
 
             gBattleCommunication[0]++;
@@ -10122,7 +10122,7 @@ static void atkCE_settorment(void)
 
 static void atkCF_jumpifnodamage(void)
 {
-    if (gProtectStructs[gBattlerAttacker].physicalDmg || gProtectStructs[gBattlerAttacker].specialDmg)
+    if (MonProtectStruct(gBattlerAttacker)->physicalDmg || MonProtectStruct(gBattlerAttacker)->specialDmg)
         gBattlescriptCurrInstr += 5;
     else
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
@@ -10151,10 +10151,10 @@ static void atkD1_trysethelpinghand(void)
 
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE
         && !(gAbsentBattlerFlags & gBitTable[gBattlerTarget])
-        && !gProtectStructs[gBattlerAttacker].helpingHand
-        && !gProtectStructs[gBattlerTarget].helpingHand)
+        && !MonProtectStruct(gBattlerAttacker)->helpingHand
+        && !MonProtectStruct(gBattlerTarget)->helpingHand)
     {
-        gProtectStructs[gBattlerTarget].helpingHand = 1;
+        MonProtectStruct(gBattlerTarget)->helpingHand = 1;
         gBattlescriptCurrInstr += 5;
     }
     else
@@ -10554,7 +10554,7 @@ static void atkDF_trysetmagiccoat(void)
     }
     else
     {
-        gProtectStructs[gBattlerAttacker].bounceMove = 1;
+        MonProtectStruct(gBattlerAttacker)->bounceMove = 1;
         gBattlescriptCurrInstr += 5;
     }
 }
@@ -10568,7 +10568,7 @@ static void atkE0_trysetsnatch(void) // snatch
     }
     else
     {
-        gProtectStructs[gBattlerAttacker].stealMove = 1;
+        MonProtectStruct(gBattlerAttacker)->stealMove = 1;
         gBattlescriptCurrInstr += 5;
     }
 }
@@ -11434,29 +11434,29 @@ static void atkFF_metalburstdamagecalculator(void)
     u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
     u8 sideTarget = 0;
 
-    if (gProtectStructs[gBattlerAttacker].physicalDmg
-        && sideAttacker != (sideTarget = GetBattlerSide(gProtectStructs[gBattlerAttacker].physicalBattlerId))
-        && gBattleMons[gProtectStructs[gBattlerAttacker].physicalBattlerId].hp)
+    if (MonProtectStruct(gBattlerAttacker)->physicalDmg
+        && sideAttacker != (sideTarget = GetBattlerSide(MonProtectStruct(gBattlerAttacker)->physicalBattlerId))
+        && gBattleMons[MonProtectStruct(gBattlerAttacker)->physicalBattlerId].hp)
     {
-        gBattleMoveDamage = gProtectStructs[gBattlerAttacker].physicalDmg * 150 / 100;
+        gBattleMoveDamage = MonProtectStruct(gBattlerAttacker)->physicalDmg * 150 / 100;
 
         if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
-            gBattlerTarget = gProtectStructs[gBattlerAttacker].physicalBattlerId;
+            gBattlerTarget = MonProtectStruct(gBattlerAttacker)->physicalBattlerId;
 
         gBattlescriptCurrInstr += 5;
     }
-    else if (gProtectStructs[gBattlerAttacker].specialDmg
-             && sideAttacker != (sideTarget = GetBattlerSide(gProtectStructs[gBattlerAttacker].specialBattlerId))
-             && gBattleMons[gProtectStructs[gBattlerAttacker].specialBattlerId].hp)
+    else if (MonProtectStruct(gBattlerAttacker)->specialDmg
+             && sideAttacker != (sideTarget = GetBattlerSide(MonProtectStruct(gBattlerAttacker)->specialBattlerId))
+             && gBattleMons[MonProtectStruct(gBattlerAttacker)->specialBattlerId].hp)
     {
-        gBattleMoveDamage = gProtectStructs[gBattlerAttacker].specialDmg * 150 / 100;
+        gBattleMoveDamage = MonProtectStruct(gBattlerAttacker)->specialDmg * 150 / 100;
 
         if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
-            gBattlerTarget = gProtectStructs[gBattlerAttacker].specialBattlerId;
+            gBattlerTarget = MonProtectStruct(gBattlerAttacker)->specialBattlerId;
 
         gBattlescriptCurrInstr += 5;
     }

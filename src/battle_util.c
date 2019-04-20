@@ -457,19 +457,19 @@ void CancelMultiTurnMoves(u8 battler)
 
 bool8 WasUnableToUseMove(u8 battler)
 {
-    if (gProtectStructs[battler].prlzImmobility
-        || gProtectStructs[battler].targetNotAffected
-        || gProtectStructs[battler].usedImprisonedMove
-        || gProtectStructs[battler].loveImmobility
-        || gProtectStructs[battler].usedDisabledMove
-        || gProtectStructs[battler].usedTauntedMove
-        || gProtectStructs[battler].usedGravityPreventedMove
-        || gProtectStructs[battler].usedHealBlockedMove
-        || gProtectStructs[battler].flag2Unknown
-        || gProtectStructs[battler].flinchImmobility
-        || gProtectStructs[battler].confusionSelfDmg
-        || gProtectStructs[battler].powderSelfDmg
-        || gProtectStructs[battler].usedThroatChopPreventedMove)
+    if (MonProtectStruct(battler)->prlzImmobility
+        || MonProtectStruct(battler)->targetNotAffected
+        || MonProtectStruct(battler)->usedImprisonedMove
+        || MonProtectStruct(battler)->loveImmobility
+        || MonProtectStruct(battler)->usedDisabledMove
+        || MonProtectStruct(battler)->usedTauntedMove
+        || MonProtectStruct(battler)->usedGravityPreventedMove
+        || MonProtectStruct(battler)->usedHealBlockedMove
+        || MonProtectStruct(battler)->flag2Unknown
+        || MonProtectStruct(battler)->flinchImmobility
+        || MonProtectStruct(battler)->confusionSelfDmg
+        || MonProtectStruct(battler)->powderSelfDmg
+        || MonProtectStruct(battler)->usedThroatChopPreventedMove)
         return TRUE;
     else
         return FALSE;
@@ -641,7 +641,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingDisabledMoveInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -656,7 +656,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingTormentedMoveInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -671,7 +671,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingNotAllowedMoveTauntInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -686,7 +686,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingNotAllowedMoveThroatChopInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -701,7 +701,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingImprisonedMoveInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -716,7 +716,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingNotAllowedMoveGravityInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -731,7 +731,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingNotAllowedMoveHealBlockInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -746,7 +746,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[gActiveBattler] = BattleScript_SelectingNotAllowedBelchInPalace;
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -762,7 +762,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         gLastUsedItem = gBattleMons[gActiveBattler].item;
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -776,7 +776,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
         gLastUsedItem = gBattleMons[gActiveBattler].item;
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -789,7 +789,7 @@ u8 TrySetCantSelectMoveBattleScript(void)
     {
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
-            gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
+            MonProtectStruct(gActiveBattler)->palaceUnableToUseMove = 1;
         }
         else
         {
@@ -848,12 +848,12 @@ bool8 AreAllMovesUnusable(void)
 
     if (unusable == 0xF) // All moves are unusable.
     {
-        gProtectStructs[gActiveBattler].noValidMoves = 1;
+        MonProtectStruct(gActiveBattler)->noValidMoves = 1;
         gSelectionBattleScripts[gActiveBattler] = BattleScript_NoMovesLeft;
     }
     else
     {
-        gProtectStructs[gActiveBattler].noValidMoves = 0;
+        MonProtectStruct(gActiveBattler)->noValidMoves = 0;
     }
 
     return (unusable == 0xF);
@@ -2161,7 +2161,7 @@ u8 AtkCanceller_UnableToUseMove(void)
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_FLINCHED)
             {
                 gBattleMons[gBattlerAttacker].status2 &= ~(STATUS2_FLINCHED);
-                gProtectStructs[gBattlerAttacker].flinchImmobility = 1;
+                MonProtectStruct(gBattlerAttacker)->flinchImmobility = 1;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedFlinched;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
@@ -2172,7 +2172,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_DISABLED: // disabled move
             if (MonDisableStruct(gBattlerAttacker)->disabledMove == gCurrentMove && MonDisableStruct(gBattlerAttacker)->disabledMove != 0)
             {
-                gProtectStructs[gBattlerAttacker].usedDisabledMove = 1;
+                MonProtectStruct(gBattlerAttacker)->usedDisabledMove = 1;
                 gBattleScripting.battler = gBattlerAttacker;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
@@ -2184,7 +2184,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_HEAL_BLOCKED:
             if (gStatuses3[gBattlerAttacker] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(gBattlerAttacker, gCurrentMove))
             {
-                gProtectStructs[gBattlerAttacker].usedHealBlockedMove = 1;
+                MonProtectStruct(gBattlerAttacker)->usedHealBlockedMove = 1;
                 gBattleScripting.battler = gBattlerAttacker;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedHealBlockPrevents;
@@ -2196,7 +2196,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_GRAVITY:
             if (gFieldStatuses & STATUS_FIELD_GRAVITY && IsGravityPreventingMove(gCurrentMove))
             {
-                gProtectStructs[gBattlerAttacker].usedGravityPreventedMove = 1;
+                MonProtectStruct(gBattlerAttacker)->usedGravityPreventedMove = 1;
                 gBattleScripting.battler = gBattlerAttacker;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedGravityPrevents;
@@ -2208,7 +2208,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_TAUNTED: // taunt
             if (MonDisableStruct(gBattlerAttacker)->tauntTimer && gBattleMoves[gCurrentMove].power == 0)
             {
-                gProtectStructs[gBattlerAttacker].usedTauntedMove = 1;
+                MonProtectStruct(gBattlerAttacker)->usedTauntedMove = 1;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
@@ -2219,7 +2219,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_IMPRISONED: // imprisoned
             if (GetImprisonedMovesCount(gBattlerAttacker, gCurrentMove))
             {
-                gProtectStructs[gBattlerAttacker].usedImprisonedMove = 1;
+                MonProtectStruct(gBattlerAttacker)->usedImprisonedMove = 1;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsImprisoned;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
@@ -2243,7 +2243,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                         gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                         gBattlerTarget = gBattlerAttacker;
                         gBattleMoveDamage = CalculateMoveDamage(MOVE_NONE, gBattlerAttacker, gBattlerAttacker, TYPE_MYSTERY, 40, FALSE, FALSE, TRUE);
-                        gProtectStructs[gBattlerAttacker].confusionSelfDmg = 1;
+                        MonProtectStruct(gBattlerAttacker)->confusionSelfDmg = 1;
                         gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                     }
                     gBattlescriptCurrInstr = BattleScript_MoveUsedIsConfused;
@@ -2260,7 +2260,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_PARALYSED: // paralysis
             if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_PARALYSIS) && (Random() % 4) == 0)
             {
-                gProtectStructs[gBattlerAttacker].prlzImmobility = 1;
+                MonProtectStruct(gBattlerAttacker)->prlzImmobility = 1;
                 // This is removed in Emerald for some reason
                 //CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalyzed;
@@ -2281,7 +2281,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                 {
                     BattleScriptPush(BattleScript_MoveUsedIsInLoveCantAttack);
                     gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                    gProtectStructs[gBattlerAttacker].loveImmobility = 1;
+                    MonProtectStruct(gBattlerAttacker)->loveImmobility = 1;
                     CancelMultiTurnMoves(gBattlerAttacker);
                 }
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsInLove;
@@ -2360,7 +2360,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                 GET_MOVE_TYPE(gCurrentMove, moveType);
                 if (moveType == TYPE_FIRE)
                 {
-                    gProtectStructs[gBattlerAttacker].powderSelfDmg = 1;
+                    MonProtectStruct(gBattlerAttacker)->powderSelfDmg = 1;
                     gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                     gBattlescriptCurrInstr = BattleScript_MoveUsedPowder;
                 }
@@ -2370,7 +2370,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_THROAT_CHOP: 
             if (MonDisableStruct(gBattlerAttacker)->throatChopTimer && gBattleMoves[gCurrentMove].flags & FLAG_SOUND)
             {
-                gProtectStructs[gBattlerAttacker].usedThroatChopPreventedMove = 1;
+                MonProtectStruct(gBattlerAttacker)->usedThroatChopPreventedMove = 1;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsThroatChopPrevented;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
@@ -3097,7 +3097,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     if (!(gBattleResources->flags->flags[battler] & RESOURCE_FLAG_FLASH_FIRE))
                     {
                         gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-                        if (gProtectStructs[gBattlerAttacker].notFirstStrike)
+                        if (MonProtectStruct(gBattlerAttacker)->notFirstStrike)
                             gBattlescriptCurrInstr = BattleScript_FlashFireBoost;
                         else
                             gBattlescriptCurrInstr = BattleScript_FlashFireBoost_PPLoss;
@@ -3108,7 +3108,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     else
                     {
                         gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-                        if (gProtectStructs[gBattlerAttacker].notFirstStrike)
+                        if (MonProtectStruct(gBattlerAttacker)->notFirstStrike)
                             gBattlescriptCurrInstr = BattleScript_FlashFireBoost;
                         else
                             gBattlescriptCurrInstr = BattleScript_FlashFireBoost_PPLoss;
@@ -3123,14 +3123,14 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 if (BATTLER_MAX_HP(battler) || gStatuses3[battler] & STATUS3_HEAL_BLOCK)
                 {
-                    if ((gProtectStructs[gBattlerAttacker].notFirstStrike))
+                    if ((MonProtectStruct(gBattlerAttacker)->notFirstStrike))
                         gBattlescriptCurrInstr = BattleScript_MonMadeMoveUseless;
                     else
                         gBattlescriptCurrInstr = BattleScript_MonMadeMoveUseless_PPLoss;
                 }
                 else
                 {
-                    if (gProtectStructs[gBattlerAttacker].notFirstStrike)
+                    if (MonProtectStruct(gBattlerAttacker)->notFirstStrike)
                         gBattlescriptCurrInstr = BattleScript_MoveHPDrain;
                     else
                         gBattlescriptCurrInstr = BattleScript_MoveHPDrain_PPLoss;
@@ -3145,14 +3145,14 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 if (gBattleMons[battler].statStages[statId] == 0xC)
                 {
-                    if ((gProtectStructs[gBattlerAttacker].notFirstStrike))
+                    if ((MonProtectStruct(gBattlerAttacker)->notFirstStrike))
                         gBattlescriptCurrInstr = BattleScript_MonMadeMoveUseless;
                     else
                         gBattlescriptCurrInstr = BattleScript_MonMadeMoveUseless_PPLoss;
                 }
                 else
                 {
-                    if (gProtectStructs[gBattlerAttacker].notFirstStrike)
+                    if (MonProtectStruct(gBattlerAttacker)->notFirstStrike)
                         gBattlescriptCurrInstr = BattleScript_MoveStatDrain;
                     else
                         gBattlescriptCurrInstr = BattleScript_MoveStatDrain_PPLoss;
@@ -3281,7 +3281,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_IRON_BARBS:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerAttacker].hp != 0
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && !MonProtectStruct(gBattlerAttacker)->confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
             {
@@ -3297,7 +3297,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_EFFECT_SPORE:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerAttacker].hp != 0
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && !MonProtectStruct(gBattlerAttacker)->confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS)
@@ -3324,7 +3324,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_POISON_POINT:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerAttacker].hp != 0
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && !MonProtectStruct(gBattlerAttacker)->confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && (Random() % 3) == 0)
@@ -3340,7 +3340,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_STATIC:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerAttacker].hp != 0
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && !MonProtectStruct(gBattlerAttacker)->confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && (Random() % 3) == 0)
@@ -3355,7 +3355,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_FLAME_BODY:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerAttacker].hp != 0
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && !MonProtectStruct(gBattlerAttacker)->confusionSelfDmg
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && TARGET_TURN_DAMAGED
              && (Random() % 3) == 0)
@@ -3370,7 +3370,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_CUTE_CHARM:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerAttacker].hp != 0
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && !MonProtectStruct(gBattlerAttacker)->confusionSelfDmg
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && TARGET_TURN_DAMAGED
              && gBattleMons[gBattlerTarget].hp != 0
@@ -4850,10 +4850,10 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         basePower = 100 * MonDisableStruct(battlerAtk)->stockpileCounter;
         break;
     case EFFECT_REVENGE:
-        if ((gProtectStructs[battlerAtk].physicalDmg
-                && gProtectStructs[battlerAtk].physicalBattlerId == battlerDef)
-            || (gProtectStructs[battlerAtk].specialDmg
-                && gProtectStructs[battlerAtk].specialBattlerId == battlerDef))
+        if ((MonProtectStruct(battlerAtk)->physicalDmg
+                && MonProtectStruct(battlerAtk)->physicalBattlerId == battlerDef)
+            || (MonProtectStruct(battlerAtk)->specialDmg
+                && MonProtectStruct(battlerAtk)->specialBattlerId == battlerDef))
             basePower *= 2;
         break;
     case EFFECT_WEATHER_BALL:
@@ -5212,7 +5212,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     }
 
     // various effecs
-    if (gProtectStructs[battlerAtk].helpingHand)
+    if (MonProtectStruct(battlerAtk)->helpingHand)
         MulModifier(&modifier, UQ_4_12(1.5));
     if (gStatuses3[battlerAtk] & STATUS3_CHARGED_UP && moveType == TYPE_ELECTRIC)
         MulModifier(&modifier, UQ_4_12(2.0));
@@ -5673,7 +5673,7 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
     if (moveType == TYPE_GROUND && defType == TYPE_FLYING && IsBattlerGrounded(battlerDef))
         mod = UQ_4_12(1.0);
     
-    if (gProtectStructs[battlerDef].kingsShielded && gBattleMoves[move].effect != EFFECT_FEINT)
+    if (MonProtectStruct(battlerDef)->kingsShielded && gBattleMoves[move].effect != EFFECT_FEINT)
         mod = UQ_4_12(1.0);
 
     MulModifier(modifier, mod);

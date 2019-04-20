@@ -211,7 +211,6 @@ EWRAM_DATA u16 gPaydayMoney = 0;
 EWRAM_DATA u16 gRandomTurnNumber = 0;
 EWRAM_DATA u8 gBattleCommunication[BATTLE_COMMUNICATION_ENTRIES_COUNT] = {0};
 EWRAM_DATA u8 gBattleOutcome = 0;
-EWRAM_DATA struct ProtectStruct gProtectStructs[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA struct SpecialStatus gSpecialStatuses[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gBattleWeather = 0;
 EWRAM_DATA struct WishFutureKnock gWishFutureKnock = {0};
@@ -2877,6 +2876,7 @@ static void BattleStartClearSetData(void)
 
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
+        memset(MonDisableStruct(i), 0, sizeof(struct DisableStruct));
         gStatuses3[i] = 0;
         MonDisableStruct(i)->isFirstTurn = 2;
         gLastMoves[i] = 0;
@@ -3016,6 +3016,8 @@ void SwitchInClearSetData(void)
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
 
+    memset(MonDisableStruct(gActiveBattler), 0, sizeof(struct DisableStruct));
+
     if (gBattleMoves[gCurrentMove].effect == EFFECT_BATON_PASS)
     {
         MonDisableStruct(gActiveBattler)->substituteHP = disableStructCopy.substituteHP;
@@ -3083,31 +3085,33 @@ void FaintClearSetData(void)
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
 
-    gProtectStructs[gActiveBattler].protected = 0;
-    gProtectStructs[gActiveBattler].spikyShielded = 0;
-    gProtectStructs[gActiveBattler].kingsShielded = 0;
-    gProtectStructs[gActiveBattler].banefulBunkered = 0;
-    gProtectStructs[gActiveBattler].endured = 0;
-    gProtectStructs[gActiveBattler].noValidMoves = 0;
-    gProtectStructs[gActiveBattler].helpingHand = 0;
-    gProtectStructs[gActiveBattler].bounceMove = 0;
-    gProtectStructs[gActiveBattler].stealMove = 0;
-    gProtectStructs[gActiveBattler].prlzImmobility = 0;
-    gProtectStructs[gActiveBattler].confusionSelfDmg = 0;
-    gProtectStructs[gActiveBattler].targetNotAffected = 0;
-    gProtectStructs[gActiveBattler].chargingTurn = 0;
-    gProtectStructs[gActiveBattler].fleeFlag = 0;
-    gProtectStructs[gActiveBattler].usedImprisonedMove = 0;
-    gProtectStructs[gActiveBattler].loveImmobility = 0;
-    gProtectStructs[gActiveBattler].usedDisabledMove = 0;
-    gProtectStructs[gActiveBattler].usedTauntedMove = 0;
-    gProtectStructs[gActiveBattler].flag2Unknown = 0;
-    gProtectStructs[gActiveBattler].flinchImmobility = 0;
-    gProtectStructs[gActiveBattler].notFirstStrike = 0;
-    gProtectStructs[gActiveBattler].usedHealBlockedMove = 0;
-    gProtectStructs[gActiveBattler].usesBouncedMove = 0;
-    gProtectStructs[gActiveBattler].usedGravityPreventedMove = 0;
-    gProtectStructs[gActiveBattler].usedThroatChopPreventedMove = 0;
+    memset(MonDisableStruct(gActiveBattler), 0, sizeof(struct DisableStruct));
+
+    MonProtectStruct(gActiveBattler)->protected = 0;
+    MonProtectStruct(gActiveBattler)->spikyShielded = 0;
+    MonProtectStruct(gActiveBattler)->kingsShielded = 0;
+    MonProtectStruct(gActiveBattler)->banefulBunkered = 0;
+    MonProtectStruct(gActiveBattler)->endured = 0;
+    MonProtectStruct(gActiveBattler)->noValidMoves = 0;
+    MonProtectStruct(gActiveBattler)->helpingHand = 0;
+    MonProtectStruct(gActiveBattler)->bounceMove = 0;
+    MonProtectStruct(gActiveBattler)->stealMove = 0;
+    MonProtectStruct(gActiveBattler)->prlzImmobility = 0;
+    MonProtectStruct(gActiveBattler)->confusionSelfDmg = 0;
+    MonProtectStruct(gActiveBattler)->targetNotAffected = 0;
+    MonProtectStruct(gActiveBattler)->chargingTurn = 0;
+    MonProtectStruct(gActiveBattler)->fleeFlag = 0;
+    MonProtectStruct(gActiveBattler)->usedImprisonedMove = 0;
+    MonProtectStruct(gActiveBattler)->loveImmobility = 0;
+    MonProtectStruct(gActiveBattler)->usedDisabledMove = 0;
+    MonProtectStruct(gActiveBattler)->usedTauntedMove = 0;
+    MonProtectStruct(gActiveBattler)->flag2Unknown = 0;
+    MonProtectStruct(gActiveBattler)->flinchImmobility = 0;
+    MonProtectStruct(gActiveBattler)->notFirstStrike = 0;
+    MonProtectStruct(gActiveBattler)->usedHealBlockedMove = 0;
+    MonProtectStruct(gActiveBattler)->usesBouncedMove = 0;
+    MonProtectStruct(gActiveBattler)->usedGravityPreventedMove = 0;
+    MonProtectStruct(gActiveBattler)->usedThroatChopPreventedMove = 0;
 
     MonDisableStruct(gActiveBattler)->isFirstTurn = 2;
 
@@ -3948,7 +3952,7 @@ static void HandleTurnActionSelectionState(void)
                         RecordedBattle_ClearBattlerAction(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler))), 1);
                     }
                     else if (gChosenActionByBattler[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler)))] == B_ACTION_USE_MOVE
-                             && (gProtectStructs[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler)))].noValidMoves
+                             && (MonProtectStruct(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler))))->noValidMoves
                                 || MonDisableStruct(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler))))->encoredMove))
                     {
                         RecordedBattle_ClearBattlerAction(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler))), 1);
@@ -4322,7 +4326,7 @@ s8 GetChosenMovePriority(u32 battlerId)
 {
     u16 move;
 
-    if (gProtectStructs[battlerId].noValidMoves)
+    if (MonProtectStruct(battlerId)->noValidMoves)
         move = MOVE_STRUGGLE;
     else
         move = gBattleMons[battlerId].moves[*(gBattleStruct->chosenMovePositions + battlerId)];
@@ -4561,14 +4565,14 @@ static void TurnValuesCleanUp(bool8 var0)
     {
         if (var0)
         {
-            gProtectStructs[gActiveBattler].protected = 0;
-            gProtectStructs[gActiveBattler].spikyShielded = 0;
-            gProtectStructs[gActiveBattler].kingsShielded = 0;
-            gProtectStructs[gActiveBattler].banefulBunkered = 0;
+            MonProtectStruct(gActiveBattler)->protected = 0;
+            MonProtectStruct(gActiveBattler)->spikyShielded = 0;
+            MonProtectStruct(gActiveBattler)->kingsShielded = 0;
+            MonProtectStruct(gActiveBattler)->banefulBunkered = 0;
         }
         else
         {
-            memset(&gProtectStructs[gActiveBattler], 0, sizeof(struct ProtectStruct));
+            memset(MonProtectStruct(gActiveBattler), 0, sizeof(struct ProtectStruct));
 
             if (MonDisableStruct(gActiveBattler)->isFirstTurn)
                 MonDisableStruct(gActiveBattler)->isFirstTurn--;
@@ -4605,7 +4609,7 @@ static void CheckMegaEvolutionBeforeTurn(void)
             gActiveBattler = gBattlerAttacker = gBattleStruct->mega.battlerId;
             gBattleStruct->mega.battlerId++;
             if (gBattleStruct->mega.toEvolve & gBitTable[gActiveBattler]
-                && !(gProtectStructs[gActiveBattler].noValidMoves))
+                && !(MonProtectStruct(gActiveBattler)->noValidMoves))
             {
                 gBattleStruct->mega.toEvolve &= ~(gBitTable[gActiveBattler]);
                 gLastUsedItem = gBattleMons[gActiveBattler].item;
@@ -4632,7 +4636,7 @@ static void CheckFocusPunch_ClearVarsBeforeTurnStarts(void)
             if (gChosenMoveByBattler[gActiveBattler] == MOVE_FOCUS_PUNCH
                 && !(gBattleMons[gActiveBattler].status1 & STATUS1_SLEEP)
                 && !(MonDisableStruct(gBattlerAttacker)->truantCounter)
-                && !(gProtectStructs[gActiveBattler].noValidMoves))
+                && !(MonProtectStruct(gActiveBattler)->noValidMoves))
             {
                 BattleScriptExecute(BattleScript_FocusPunchSetUp);
                 return;
@@ -4787,7 +4791,7 @@ static void HandleEndTurn_RanFromBattle(void)
     }
     else
     {
-        switch (gProtectStructs[gBattlerAttacker].fleeFlag)
+        switch (MonProtectStruct(gBattlerAttacker)->fleeFlag)
         {
         default:
             gBattlescriptCurrInstr = BattleScript_GotAwaySafely;
@@ -5094,9 +5098,9 @@ static void HandleAction_UseMove(void)
     gCurrMovePos = gChosenMovePos = *(gBattleStruct->chosenMovePositions + gBattlerAttacker);
 
     // choose move
-    if (gProtectStructs[gBattlerAttacker].noValidMoves)
+    if (MonProtectStruct(gBattlerAttacker)->noValidMoves)
     {
-        gProtectStructs[gBattlerAttacker].noValidMoves = 0;
+        MonProtectStruct(gBattlerAttacker)->noValidMoves = 0;
         gCurrentMove = gChosenMove = MOVE_STRUGGLE;
         gHitMarker |= HITMARKER_NO_PPDEDUCT;
         *(gBattleStruct->moveTarget + gBattlerAttacker) = GetMoveTarget(MOVE_STRUGGLE, 0);
@@ -5297,7 +5301,7 @@ static void HandleAction_UseMove(void)
 
     // Choose battlescript.
     if (gBattleTypeFlags & BATTLE_TYPE_PALACE
-        && gProtectStructs[gBattlerAttacker].palaceUnableToUseMove)
+        && MonProtectStruct(gBattlerAttacker)->palaceUnableToUseMove)
     {
         if (gBattleMons[gBattlerAttacker].hp == 0)
         {
@@ -5441,7 +5445,7 @@ bool8 TryRunFromBattle(u8 battler)
     if (holdEffect == HOLD_EFFECT_CAN_ALWAYS_RUN)
     {
         gLastUsedItem = gBattleMons[battler].item;
-        gProtectStructs[battler].fleeFlag = 1;
+        MonProtectStruct(battler)->fleeFlag = 1;
         effect++;
     }
     else if (gBattleMons[battler].ability == ABILITY_RUN_AWAY)
@@ -5454,14 +5458,14 @@ bool8 TryRunFromBattle(u8 battler)
             if (speedVar > (Random() & 0xFF))
             {
                 gLastUsedAbility = ABILITY_RUN_AWAY;
-                gProtectStructs[battler].fleeFlag = 2;
+                MonProtectStruct(battler)->fleeFlag = 2;
                 effect++;
             }
         }
         else
         {
             gLastUsedAbility = ABILITY_RUN_AWAY;
-            gProtectStructs[battler].fleeFlag = 2;
+            MonProtectStruct(battler)->fleeFlag = 2;
             effect++;
         }
     }

@@ -75,41 +75,6 @@ struct ResourceFlags
 #define RESOURCE_FLAG_INTIMIDATED   0x8
 #define RESOURCE_FLAG_TRACED        0x10
 
-struct ProtectStruct
-{
-    u32 protected:1;
-    u32 spikyShielded:1;
-    u32 kingsShielded:1;
-    u32 banefulBunkered:1;
-    u32 endured:1;
-    u32 noValidMoves:1;
-    u32 helpingHand:1;
-    u32 bounceMove:1;
-    u32 stealMove:1;
-    u32 prlzImmobility:1;
-    u32 confusionSelfDmg:1;
-    u32 targetNotAffected:1;
-    u32 chargingTurn:1;
-    u32 fleeFlag:2; // For RunAway and Smoke Ball.
-    u32 usedImprisonedMove:1;
-    u32 loveImmobility:1;
-    u32 usedDisabledMove:1;
-    u32 usedTauntedMove:1;
-    u32 flag2Unknown:1; // Only set to 0 once. Checked in 'WasUnableToUseMove' function.
-    u32 flinchImmobility:1;
-    u32 notFirstStrike:1;
-    u32 palaceUnableToUseMove:1;
-    u32 usesBouncedMove:1;
-    u32 usedHealBlockedMove:1;
-    u32 usedGravityPreventedMove:1;
-    u32 powderSelfDmg:1;
-    u32 usedThroatChopPreventedMove:1;
-    u32 physicalDmg;
-    u32 specialDmg;
-    u8 physicalBattlerId;
-    u8 specialBattlerId;
-};
-
 struct SpecialStatus
 {
     u8 statLowered:1;
