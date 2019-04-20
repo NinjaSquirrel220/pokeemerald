@@ -134,6 +134,51 @@
 #define MAX_TOTAL_EVS 510
 #define UNOWN_FORM_COUNT 28
 
+#define gDisableStructs(battler) (&gBattleMons[battler].disableStruct)
+
+struct DisableStruct
+{
+    u32 transformedMonPersonality;
+    u16 disabledMove;
+    u16 encoredMove;
+    u8 protectUses;
+    u8 stockpileCounter;
+    u8 substituteHP;
+    u8 disableTimer:4;
+    u8 disableTimerStartValue:4;
+    u8 encoredMovePos;
+    u8 encoreTimer:4;
+    u8 encoreTimerStartValue:4;
+    u8 perishSongTimer:4;
+    u8 perishSongTimerStartValue:4;
+    u8 furyCutterCounter;
+    u8 rolloutTimer:4;
+    u8 rolloutTimerStartValue:4;
+    u8 chargeTimer:4;
+    u8 chargeTimerStartValue:4;
+    u8 tauntTimer:4;
+    u8 tauntTimer2:4;
+    u8 battlerPreventingEscape;
+    u8 battlerWithSureHit;
+    u8 isFirstTurn;
+    u8 truantCounter:1;
+    u8 truantSwitchInHack:1;
+    u8 mimickedMoves:4;
+    u8 unnerveTimer: 2;
+    u8 unusedTimer;
+    u8 autotomizeCount;
+    u8 slowStartTimer;
+    u8 embargoTimer;
+    u8 magnetRiseTimer;
+    u8 telekinesisTimer;
+    u8 healBlockTimer;
+    u8 laserFocusTimer;
+    u8 usedMoves:4;
+    u8 wrapTurns;
+	u8 skyDrop;
+    u8 skyDropTrappingBattler;
+};
+
 struct BoxPokemon
 {
     u32 personality;
@@ -278,6 +323,9 @@ struct BattlePokemon
     /*0x4C*/ u32 status1;
     /*0x50*/ u32 status2;
     /*0x54*/ u32 otId;
+    
+    // Enhancements
+    struct DisableStruct disableStruct;
 };
 
 struct BaseStats

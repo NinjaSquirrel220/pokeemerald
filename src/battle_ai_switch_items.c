@@ -39,7 +39,7 @@ void GetAIPartyIndexes(u32 battlerId, s32 *firstId, s32 *lastId)
 static bool8 ShouldSwitchIfPerishSong(void)
 {
     if (gStatuses3[gActiveBattler] & STATUS3_PERISH_SONG
-        && gDisableStructs[gActiveBattler].perishSongTimer == 0)
+        && gBattleMons[gActiveBattler].disableStruct.perishSongTimer == 0)
     {
         *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = PARTY_SIZE;
         BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
@@ -829,7 +829,7 @@ static bool8 ShouldUseItem(void)
             break;
         case AI_ITEM_X_STAT:
             *(gBattleStruct->AI_itemFlags + gActiveBattler / 2) = 0;
-            if (gDisableStructs[gActiveBattler].isFirstTurn == 0)
+            if (gBattleMons[gActiveBattler].disableStruct.isFirstTurn == 0)
                 break;
             if (itemEffects[0] & 0xF)
                 *(gBattleStruct->AI_itemFlags + gActiveBattler / 2) |= 0x1;
@@ -847,7 +847,7 @@ static bool8 ShouldUseItem(void)
             break;
         case AI_ITEM_GUARD_SPECS:
             battlerSide = GetBattlerSide(gActiveBattler);
-            if (gDisableStructs[gActiveBattler].isFirstTurn != 0 && gSideTimers[battlerSide].mistTimer == 0)
+            if (gBattleMons[gActiveBattler].disableStruct.isFirstTurn != 0 && gSideTimers[battlerSide].mistTimer == 0)
                 shouldUse = TRUE;
             break;
         case AI_ITEM_NOT_RECOGNIZABLE:
