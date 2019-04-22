@@ -3003,6 +3003,8 @@ void SwitchInClearSetData(void)
     {
         gBattleMons[gActiveBattler].status2 = 0;
         gStatuses3[gActiveBattler] = 0;
+        memset(MonDisableStruct(gActiveBattler), 0, sizeof(struct DisableStruct));
+        memset(MonProtectStruct(gActiveBattler), 0, sizeof(struct ProtectStruct));
     }
 
     for (i = 0; i < gBattlersCount; i++)
@@ -3086,32 +3088,7 @@ void FaintClearSetData(void)
     gMoveSelectionCursor[gActiveBattler] = 0;
 
     memset(MonDisableStruct(gActiveBattler), 0, sizeof(struct DisableStruct));
-
-    MonProtectStruct(gActiveBattler)->protected = 0;
-    MonProtectStruct(gActiveBattler)->spikyShielded = 0;
-    MonProtectStruct(gActiveBattler)->kingsShielded = 0;
-    MonProtectStruct(gActiveBattler)->banefulBunkered = 0;
-    MonProtectStruct(gActiveBattler)->endured = 0;
-    MonProtectStruct(gActiveBattler)->noValidMoves = 0;
-    MonProtectStruct(gActiveBattler)->helpingHand = 0;
-    MonProtectStruct(gActiveBattler)->bounceMove = 0;
-    MonProtectStruct(gActiveBattler)->stealMove = 0;
-    MonProtectStruct(gActiveBattler)->prlzImmobility = 0;
-    MonProtectStruct(gActiveBattler)->confusionSelfDmg = 0;
-    MonProtectStruct(gActiveBattler)->targetNotAffected = 0;
-    MonProtectStruct(gActiveBattler)->chargingTurn = 0;
-    MonProtectStruct(gActiveBattler)->fleeFlag = 0;
-    MonProtectStruct(gActiveBattler)->usedImprisonedMove = 0;
-    MonProtectStruct(gActiveBattler)->loveImmobility = 0;
-    MonProtectStruct(gActiveBattler)->usedDisabledMove = 0;
-    MonProtectStruct(gActiveBattler)->usedTauntedMove = 0;
-    MonProtectStruct(gActiveBattler)->flag2Unknown = 0;
-    MonProtectStruct(gActiveBattler)->flinchImmobility = 0;
-    MonProtectStruct(gActiveBattler)->notFirstStrike = 0;
-    MonProtectStruct(gActiveBattler)->usedHealBlockedMove = 0;
-    MonProtectStruct(gActiveBattler)->usesBouncedMove = 0;
-    MonProtectStruct(gActiveBattler)->usedGravityPreventedMove = 0;
-    MonProtectStruct(gActiveBattler)->usedThroatChopPreventedMove = 0;
+    memset(MonProtectStruct(gActiveBattler), 0, sizeof(struct ProtectStruct));
 
     MonDisableStruct(gActiveBattler)->isFirstTurn = 2;
 
@@ -3204,6 +3181,8 @@ static void DoBattleIntro(void)
                 gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
                 gBattleStruct->hpOnSwitchout[GetBattlerSide(gActiveBattler)] = gBattleMons[gActiveBattler].hp;
                 gBattleMons[gActiveBattler].status2 = 0;
+                memset(MonDisableStruct(gActiveBattler), 0, sizeof(struct DisableStruct));
+                memset(MonProtectStruct(gActiveBattler), 0, sizeof(struct ProtectStruct));
                 for (i = 0; i < NUM_BATTLE_STATS; i++)
                     gBattleMons[gActiveBattler].statStages[i] = 6;
             }
