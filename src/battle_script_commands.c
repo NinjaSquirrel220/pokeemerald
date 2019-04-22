@@ -5317,14 +5317,14 @@ static void atk52_switchineffects(void)
     }
     else
     {
-        // There is a hack here to ensure the truant counter will be 0 when the battler's next turn starts.
+        /* There is a hack here to ensure the truant counter will be 0 when the battler's next turn starts.
         // The truant counter is not updated in the case where a mon switches in after a lost judgement in the battle arena.
         if (gBattleMons[gActiveBattler].ability == ABILITY_TRUANT && !MonDisableStruct(gActiveBattler)->truantSwitchInHack)
             MonDisableStruct(gActiveBattler)->truantCounter = 1;
 
         MonDisableStruct(gActiveBattler)->truantSwitchInHack = 0;
 
-        if (!AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, gActiveBattler, 0, 0, 0)
+        */if (!AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, gActiveBattler, 0, 0, 0)
             && !ItemBattleEffects(ITEMEFFECT_ON_SWITCH_IN, gActiveBattler, FALSE))
         {
             gSideStatuses[GetBattlerSide(gActiveBattler)] &= ~(SIDE_STATUS_SPIKES_DAMAGED | SIDE_STATUS_TOXIC_SPIKES_DAMAGED | SIDE_STATUS_STEALTH_ROCK_DAMAGED | SIDE_STATUS_STICKY_WEB_DAMAGED);
@@ -6644,14 +6644,14 @@ static void atk76_various(void)
         gBattleMons[1].hp = 0;
         gHitMarker |= HITMARKER_FAINTED(1);
         gBattleStruct->arenaLostOpponentMons |= gBitTable[gBattlerPartyIndexes[1]];
-        MonDisableStruct(1)->truantSwitchInHack = 1;
+        MonDisableStruct(1)->truantCounter = 0;
         break;
     case VARIOUS_ARENA_PLAYER_MON_LOST:
         gBattleMons[0].hp = 0;
         gHitMarker |= HITMARKER_FAINTED(0);
         gHitMarker |= HITMARKER_x400000;
         gBattleStruct->arenaLostPlayerMons |= gBitTable[gBattlerPartyIndexes[0]];
-        MonDisableStruct(0)->truantSwitchInHack = 1;
+        MonDisableStruct(0)->truantCounter = 0;
         break;
     case VARIOUS_ARENA_BOTH_MONS_LOST:
         gBattleMons[0].hp = 0;
@@ -6661,8 +6661,8 @@ static void atk76_various(void)
         gHitMarker |= HITMARKER_x400000;
         gBattleStruct->arenaLostPlayerMons |= gBitTable[gBattlerPartyIndexes[0]];
         gBattleStruct->arenaLostOpponentMons |= gBitTable[gBattlerPartyIndexes[1]];
-        MonDisableStruct(0)->truantSwitchInHack = 1;
-        MonDisableStruct(1)->truantSwitchInHack = 1;
+        MonDisableStruct(0)->truantCounter = 0;
+        MonDisableStruct(1)->truantCounter = 0;
         break;
     case VARIOUS_EMIT_YESNOBOX:
         BtlController_EmitUnknownYesNoBox(0);
@@ -7493,7 +7493,7 @@ static void atk77_setprotectlike(void)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             }
 
-            MonDisableStruct(gBattlerAttacker)->protectUses++;
+            if (MonDisableStruct(gBattlerAttacker)->protectUses != 3) MonDisableStruct(gBattlerAttacker)->protectUses++;
             fail = FALSE;
         }
         else // Protects the whole side.
@@ -7503,21 +7503,21 @@ static void atk77_setprotectlike(void)
             {
                 gSideStatuses[side] |= SIDE_STATUS_WIDE_GUARD;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 3;
-                MonDisableStruct(gBattlerAttacker)->protectUses++;
+                if (MonDisableStruct(gBattlerAttacker)->protectUses != 3) MonDisableStruct(gBattlerAttacker)->protectUses++;
                 fail = FALSE;
             }
             else if (gCurrentMove == MOVE_QUICK_GUARD && !(gSideStatuses[side] & SIDE_STATUS_QUICK_GUARD))
             {
                 gSideStatuses[side] |= SIDE_STATUS_QUICK_GUARD;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 3;
-                MonDisableStruct(gBattlerAttacker)->protectUses++;
+                if (MonDisableStruct(gBattlerAttacker)->protectUses != 3) MonDisableStruct(gBattlerAttacker)->protectUses++;
                 fail = FALSE;
             }
             else if (gCurrentMove == MOVE_CRAFTY_SHIELD && !(gSideStatuses[side] & SIDE_STATUS_CRAFTY_SHIELD))
             {
                 gSideStatuses[side] |= SIDE_STATUS_CRAFTY_SHIELD;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 3;
-                MonDisableStruct(gBattlerAttacker)->protectUses++;
+                if (MonDisableStruct(gBattlerAttacker)->protectUses != 3) MonDisableStruct(gBattlerAttacker)->protectUses++;
                 fail = FALSE;
             }
             else if (gCurrentMove == MOVE_MAT_BLOCK && !(gSideStatuses[side] & SIDE_STATUS_MAT_BLOCK))
@@ -9035,7 +9035,6 @@ static void atkA3_disablelastusedattack(void)
 
         MonDisableStruct(gBattlerTarget)->disabledMove = gBattleMons[gBattlerTarget].moves[i];
         MonDisableStruct(gBattlerTarget)->disableTimer = (Random() & 3) + 2;
-        MonDisableStruct(gBattlerTarget)->disableTimerStartValue = MonDisableStruct(gBattlerTarget)->disableTimer; // used to save the random amount of turns?
         gBattlescriptCurrInstr += 5;
     }
     else
@@ -9067,7 +9066,6 @@ static void atkA4_trysetencore(void)
         MonDisableStruct(gBattlerTarget)->encoredMove = gBattleMons[gBattlerTarget].moves[i];
         MonDisableStruct(gBattlerTarget)->encoredMovePos = i;
         MonDisableStruct(gBattlerTarget)->encoreTimer = 3;
-        MonDisableStruct(gBattlerTarget)->encoreTimerStartValue = MonDisableStruct(gBattlerTarget)->encoreTimer;
         gBattlescriptCurrInstr += 5;
     }
     else
@@ -9535,7 +9533,6 @@ static void atkB2_trysetperishsong(void)
         {
             gStatuses3[i] |= STATUS3_PERISH_SONG;
             MonDisableStruct(i)->perishSongTimer = 3;
-            MonDisableStruct(i)->perishSongTimerStartValue = 3;
         }
     }
 
@@ -9559,7 +9556,6 @@ static void atkB3_handlerollout(void)
         if (!(gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)) // First hit.
         {
             MonDisableStruct(gBattlerAttacker)->rolloutTimer = 5;
-            MonDisableStruct(gBattlerAttacker)->rolloutTimerStartValue = 5;
             gBattleMons[gBattlerAttacker].status2 |= STATUS2_MULTIPLETURNS;
             gLockedMoves[gBattlerAttacker] = gCurrentMove;
         }
@@ -9590,7 +9586,7 @@ static void atkB5_handlefurycutter(void)
     }
     else
     {
-        if (MonDisableStruct(gBattlerAttacker)->furyCutterCounter != 5)
+        if (MonDisableStruct(gBattlerAttacker)->furyCutterCounter != 3)
             MonDisableStruct(gBattlerAttacker)->furyCutterCounter++;
 
         gBattlescriptCurrInstr++;
@@ -10078,7 +10074,6 @@ static void atkCB_setcharge(void)
 {
     gStatuses3[gBattlerAttacker] |= STATUS3_CHARGED_UP;
     MonDisableStruct(gBattlerAttacker)->chargeTimer = 2;
-    MonDisableStruct(gBattlerAttacker)->chargeTimerStartValue = 2;
     gBattlescriptCurrInstr++;
 }
 
@@ -10136,7 +10131,7 @@ static void atkD0_settaunt(void)
         if (GetBattlerTurnOrderNum(gBattlerTarget) > GetBattlerTurnOrderNum(gBattlerAttacker))
             turns--; // If the target hasn't yet moved this turn, Taunt lasts for only three turns (source: Bulbapedia)
 
-        MonDisableStruct(gBattlerTarget)->tauntTimer = MonDisableStruct(gBattlerTarget)->tauntTimer2 = turns;
+        MonDisableStruct(gBattlerTarget)->tauntTimer = turns;
         gBattlescriptCurrInstr += 5;
     }
     else

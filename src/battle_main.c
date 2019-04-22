@@ -3025,13 +3025,11 @@ void SwitchInClearSetData(void)
         MonDisableStruct(gActiveBattler)->substituteHP = disableStructCopy.substituteHP;
         MonDisableStruct(gActiveBattler)->battlerWithSureHit = disableStructCopy.battlerWithSureHit;
         MonDisableStruct(gActiveBattler)->perishSongTimer = disableStructCopy.perishSongTimer;
-        MonDisableStruct(gActiveBattler)->perishSongTimerStartValue = disableStructCopy.perishSongTimerStartValue;
         MonDisableStruct(gActiveBattler)->battlerPreventingEscape = disableStructCopy.battlerPreventingEscape;
     }
 
     gMoveResultFlags = 0;
     MonDisableStruct(gActiveBattler)->isFirstTurn = 2;
-    MonDisableStruct(gActiveBattler)->truantSwitchInHack = disableStructCopy.truantSwitchInHack;
     gLastMoves[gActiveBattler] = 0;
     gLastLandedMoves[gActiveBattler] = 0;
     gLastHitByType[gActiveBattler] = 0;
@@ -3088,7 +3086,7 @@ void FaintClearSetData(void)
     gMoveSelectionCursor[gActiveBattler] = 0;
 
     memset(MonDisableStruct(gActiveBattler), 0, sizeof(struct DisableStruct));
-    memset(MonProtectStruct(gActiveBattler), 0, sizeof(struct ProtectStruct));
+    memset(MonProtectStruct(gActiveBattler), 0, sizeof(struct ProtectStruct) - 10);
 
     MonDisableStruct(gActiveBattler)->isFirstTurn = 2;
 

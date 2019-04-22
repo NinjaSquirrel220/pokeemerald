@@ -745,7 +745,7 @@ void sub_811131C(struct Sprite *sprite)
 
 static u8 sub_811135C(void)
 {
-    u8 retVal = gAnimDisableStructPtr->rolloutTimerStartValue - gAnimDisableStructPtr->rolloutTimer;
+    u8 retVal = 5 - gAnimDisableStructPtr->rolloutTimer;
     u8 var0 = retVal - 1;
     if (var0 > 4)
         retVal = 1;

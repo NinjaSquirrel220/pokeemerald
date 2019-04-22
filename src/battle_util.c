@@ -2262,7 +2262,7 @@ u8 AtkCanceller_UnableToUseMove(void)
             {
                 MonProtectStruct(gBattlerAttacker)->prlzImmobility = 1;
                 // This is removed in Emerald for some reason
-                //CancelMultiTurnMoves(gBattlerAttacker);
+                CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalyzed;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
